@@ -1,4 +1,3 @@
-
 #define WIFI_SSID "[Your WiFi SSID]"
 #define WIFI_PWD "[Your WiFi Password]"
 
