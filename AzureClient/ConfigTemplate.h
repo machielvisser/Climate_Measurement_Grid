@@ -1,8 +1,8 @@
 
-#define WIFI_SSID "OurWifi"
-#define WIFI_PWD "poepie123"
+#define WIFI_SSID "[Your WiFi SSID]"
+#define WIFI_PWD "[Your WiFi Password]"
 
-#define NTP_SERVER "nl.pool.ntp.org"
+#define NTP_SERVER "[Your region].pool.ntp.org"
 
 #define DEVICE_LOCATION "[Your device location - eg Garage]"
 
