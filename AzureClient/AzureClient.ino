@@ -92,12 +92,26 @@
 
 #include "Sensor.h"
 #include "DigitalPin.h"
-#include "Sht30.h"
 
-//#include "Bme280.h"
-//#include "Bmp280.h"
-//#include "Bmp180.h"
-//#include "DhtSensor.h"
+#ifdef SHT30
+#include "Sht30.h"
+#endif
+
+#ifdef BMP180
+#include "Bmp180.h"
+#endif
+
+#ifdef BME280
+#include "Bme280.h"
+#endif
+
+#ifdef BMP280
+#include "Bmp280.h"
+#endif
+
+#ifdef DHTSENSOR
+#include "DhtSensor.h"
+#endif
 
 Device device(WIFI_SSID, WIFI_PWD, PUBLISH_RATE_IN_SECONDS, DEEP_SLEEP_IN_SECONDS);
 

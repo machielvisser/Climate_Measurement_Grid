@@ -10,6 +10,15 @@
 
 #define IOTHUB_CONNECTION_STRING "[Your Azure IoT Hub or Azure IoT Central Connection String]"
 
+/*
+Define you sensor type. If you only want to use the fake mock sensor, nothing needs to be done here.
+#define SHT30
+#define BMP180
+#define BME280
+#define BMP280
+#define DHTSENSOR
+*/
+
 /* 
  http://hassansin.github.io/certificate-pinning-in-nodejs for information on generating fingerprint. From Ubuntu or Ubuntu subsystem on Windows 10
  
