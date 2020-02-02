@@ -127,9 +127,17 @@ DigitalPin led(LED_BUILTIN, false, false); // initial state is off (false)
 #endif
 
 // uncomment required sensor
+#ifdef FAKESENSOR
 Sensor sensor; // Fake sample environmental data useful for testing///
-//Bme280 sensor;
-//Sht30 sensor;/
+#endif
+
+#ifdef BME280
+Bme280 sensor;
+#endif
+
+#ifdef SHT30
+Sht30 sensor;
+#endif
 
 
 // Structure which will be stored in RTC memory.
