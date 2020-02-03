@@ -13,9 +13,8 @@ char *Sensor::toJSON()
     Have allowed for a few extra json fields that actually being used at the moment
 */
 
-  StaticJsonBuffer<JSON_OBJECT_SIZE(16)> jsonBuffer;
+  StaticJsonDocument<JSON_OBJECT_SIZE(16)> root;
 
-  JsonObject &root = jsonBuffer.createObject();
   root["DeviceId"] = deviceId;
   //  root["Utc"] = getISODateTime();
   root["Celsius"] = temperature;
@@ -34,7 +33,7 @@ char *Sensor::toJSON()
   root["Id"] = ++msgId;
   root["NotSent"] = notSent;
 
-  root.printTo(buffer, sizeof(buffer));
+  serializeJson(root, buffer);
 
   return buffer;
 }

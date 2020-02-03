@@ -170,7 +170,7 @@ void setup()
   }
 #endif
 
-#if defined ARDUINO_SAMD_FEATHER_M0
+#ifdef ARDUINO_SAMD_FEATHER_M0
   //  Required for feather m0 wifi
   WiFi.setPins(8, 7, 4, 2);
 #endif

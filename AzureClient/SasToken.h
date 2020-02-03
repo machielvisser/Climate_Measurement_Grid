@@ -5,8 +5,10 @@
 #include "sha256.h"
 #include <TimeLib.h> // http://playground.arduino.cc/code/time - installed via library manager
 
+#include<stdio.h>
+
 #define MAX_HOST_DEVICE_LEN
-#define BUFSIZE 150
+#define SAS_TOKEN_BUFFER_SIZE 150
 #define SAS_TOKEN_SIZE 300
 
 class SasToken
@@ -38,7 +40,7 @@ protected:
   int urlEncode(char *dest, char *msg);
 
 private:
-  char buff[BUFSIZE];
+  char buff[SAS_TOKEN_BUFFER_SIZE];
   virtual void createSasToken(char *key);
   char *getValue(char *token, char *key);
 };

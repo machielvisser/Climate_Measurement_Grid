@@ -35,7 +35,7 @@ void SasToken::createSasToken(char *key)
   Base64.decode(buff, key, keyLength); //decode key
   Sha256.initHmac((const uint8_t *)buff, decodedKeyLength);
 
-  int len = snprintf(buff, sizeof(buff), "%s/devices/%s\n%d", this->device.host, this->device.id, sas.expiryTime);
+  int len = snprintf(buff, sizeof(buff), "%s/devices/%s\n%ld", this->device.host, this->device.id, sas.expiryTime);
   Sha256.print(buff);
 
   char *sign = (char *)Sha256.resultHmac();
