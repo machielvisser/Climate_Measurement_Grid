@@ -1,15 +1,12 @@
-# Securely stream data from ESP8266 MCUs to Azure IoT Hub or Azure IoT Central
+# Securely stream data from ESP8266 MCUs to Azure IoT Hub
 
-|Author|[Dave Glover](https://developer.microsoft.com/en-us/advocates/dave-glover?WT.mc_id=article-github-dglover), Microsoft Cloud Developer Advocate |
-|----|---|
-|Solution|This solution securely streams sensor data directly to Azure IoT Hub over HTTPS calling Azure REST APIs from an ESP8266 MCU.|
-|Source Code| [ESP8266 Secure Azure IoT Hub Client V2](https://github.com/gloveboxes/Arduino-ESP8266-Secure-Http-Azure-IoT-Hub-Client-V2) |
-|Documentation|[README](https://gloveboxes.github.io/Arduino-ESP8266-Secure-Http-Azure-IoT-Hub-Client-V2)|
-|Platform|[ESP8266 (Firmware V2.3.0)](https://github.com/esp8266/Arduino), [Azure IoT Central](https://docs.microsoft.com/en-us/azure/iot-central/?WT.mc_id=article-github-dglover), [Azure IoT Hub](https://docs.microsoft.com/en-au/azure/iot-hub/?WT.mc_id=article-github-dglover), [Azure Stream Analytics](https://docs.microsoft.com/en-us/azure/stream-analytics/?WT.mc_id=article-github-dglover), [Power Bi](https://docs.microsoft.com/en-us/power-bi/?WT.mc_id=article-github-dglover)|
-|Video Training|[What is Azure IoT Central](https://docs.microsoft.com/en-us/azure/iot-central/overview-iot-central/?WT.mc_id=article-github-dglover), [Introduction to Azure IoT Hub](https://www.youtube.com/watch?v=smuZaZZXKsU)|
-|Screencasts|[How to create the Azure IoT Central Application](https://youtu.be/D26rJmHyZcA), [How to create an Azure IoT Hub](https://youtu.be/lHpUu6wSX40)|
-|Date|As at Nov 2018|
-|Acknowledgment|Thanks to [Štěpán Bechynský](https://microsoft.hackster.io/en-US/stepanb) "[Proof of Concept – NodeMCU, Arduino and Azure Event Hub] (https://microsoft.hackster.io/en-US/stepanb/proof-of-concept-nodemcu-arduino-and-azure-event-hub-a33043)" project |
+This solution is based on the solution of [Dave Glover](https://developer.microsoft.com/en-us/advocates/dave-glover?WT.mc_id=article-github-dglover)
+
+The goal of this project is to measure the temperature and humidity in every room of my house and to analyse the data over time in relation to the intended temperature of the house. The expected results are:
+* Rooms where the temperature drops faster than average when the heater turns of -> isolation should be improved
+* Rooms where the temperature rises slower than average -> radiator configuation or placement could be improved
+
+
 
 ## Device Platform
 
@@ -69,7 +66,7 @@ Open the Config.h file in the solution and configure the following:
 #define WIFI_SSID "[Your WiFi SSID]"
 #define WIFI_PWD "[Your WiFi Password]"
 
-#define NTP_SERVER "au.pool.ntp.org"
+#define NTP_SERVER "[Your prefered time server, 'pool.ntp.org' chooses a default, 'nl.pool.ntp.org' gives a server in the Netherlands]"
 
 #define DEVICE_LOCATION "[Your device location - eg Garage]"
 
@@ -85,10 +82,9 @@ The sample includes the following sensors in the main project: Fake Sensor,
 BME280, and the Sht30. The default sensor returns fake temperature, humidity, pressure and light telemetry. To switch to a real sensor comment out the Sensor sensor line and uncomment one of real sensors.
 
 ```c
-// uncomment required sensor
-Sensor sensor; // Fake sample environmental data useful for testing///
-//Bme280 sensor;
-//Sht30 sensor;/
+#define BME280
+// or
+#define Sht30
 ```
 
 There are additional drivers in the drivers directory: BMP180, BMP280, DHT11, DHT22, LDR, OLED.
@@ -169,6 +165,14 @@ There are a number of ESP8266 based development boards available so be sure to c
 4. Wires
 
 ![WeMos D1 Mini BMP180](https://raw.githubusercontent.com/gloveboxes/Arduino-ESP8266-Secure-Azure-IoT-Hub-Client/master/AzureClient/Fritzing/WeMosD1Mini_bb.jpg)
+
+### WeMos D1 Mini with BME280 Sensor
+
+1. [WeMos D1 Mini](http://www.wemos.cc/)
+2. [BME280 Barometric Pressure Sensor](https://www.hackerstore.nl/Afbeeldingen/1385groot.jpg)
+3. 1 x Proto board
+
+![WeMos D1 Mini BME280](https://github.com/machielvisser/ESP8266-Climate-Measure-Station/blob/master/AzureClient/Fritzing/D1Mini_BME280.jpg)
 
 ### WeMos D1 Mini with DHT Shield Sensor
 
