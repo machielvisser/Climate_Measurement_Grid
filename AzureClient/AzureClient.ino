@@ -159,6 +159,10 @@ void setup() {
   Serial.print("Sensor configuration: ");
   Serial.printf("Id: %s Location: %s\n", sensor.deviceId, sensor.geo);
 
+#ifdef BME280
+  sensor.initialise(-1);
+#endif
+
 #ifdef ARDUINO_ARCH_ESP8266
   if (device.deepSleepSeconds > 0)
   {

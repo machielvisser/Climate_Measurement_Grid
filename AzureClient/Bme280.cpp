@@ -47,6 +47,4 @@ void Bme280::measure()
   {
     digitalWrite(powerPin, LOW);
   }
-
-  Serial.println(temperature);
 }
