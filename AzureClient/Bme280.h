@@ -8,12 +8,11 @@
 class Bme280 : public Sensor
 {
 public:
-  Bme280(){};
+  Bme280() {};
   void measure();
-  void initialise(int powerPin = -1);
+  void initialise();
 
 protected:
-  int powerPin = -1;
   Adafruit_BME280 bme280; // I2C
 };
 

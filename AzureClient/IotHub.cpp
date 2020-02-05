@@ -53,7 +53,7 @@ bool IotHub::connect()
   {
     if (!client->connect(device.host, 443))
     {
-      Serial.print("Host connection failed.  WiFi IP Address: ");
+      Serial.printf("Host connection failed (%s).  WiFi IP Address: \n", device.host);
       Serial.println(WiFi.localIP());
       return false; //"Not Connected";
     }

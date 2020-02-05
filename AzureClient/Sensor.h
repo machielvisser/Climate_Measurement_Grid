@@ -9,10 +9,7 @@
 class Sensor
 {
 public:
-  Sensor()
-  {
-//    randomSeed(analogRead(A0));
-  };
+  Sensor() {};
 
   void measure();
   char *toJSON();
@@ -40,7 +37,7 @@ protected:
 
 private:
   char buffer[256];
-  char isoTime[20];
+  char isoTime[21];
   char *getISODateTime();
 };
 

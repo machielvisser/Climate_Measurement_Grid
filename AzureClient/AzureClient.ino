@@ -152,16 +152,11 @@ struct
 
 void setup() {
   Serial.begin(115200);
-  Serial.println("Starting");
+  Serial.println("\nStarting");
   
   sensor.deviceId = hub.getDeviceId();
   sensor.geo = DEVICE_LOCATION;
-  Serial.print("Sensor configuration: ");
-  Serial.printf("Id: %s Location: %s\n", sensor.deviceId, sensor.geo);
-
-#ifdef BME280
-  sensor.initialise(-1);
-#endif
+  Serial.printf("Sensor configuration: (Id: %s Location: %s)\n", sensor.deviceId, sensor.geo);
 
 #ifdef ARDUINO_ARCH_ESP8266
   if (device.deepSleepSeconds > 0)
@@ -253,8 +248,9 @@ void lowPowerPublishESP8266()
     rtcData.msgId = sensor.msgId;
     rtcData.lastSentEpoch = now();
 
-    //int resultCode = hub.publish(sensor.toJSON()); // resultCode 204 IoTHub Success, 201 EventHub Success
-    int resultCode = 0;
+    Serial.println(sensor.toJSON());
+    int resultCode = hub.publish(sensor.toJSON()); // resultCode 204 IoTHub Success, 201 EventHub Success
+    
     // only update rtc data if successfully published data
     if (resultCode == 201 || resultCode == 204)
     {
@@ -278,6 +274,7 @@ void lowPowerPublishESP8266()
 
   WiFi.mode(WIFI_OFF);
   ESP.deepSleep(1000000 * device.deepSleepSeconds, WAKE_RF_DEFAULT); // GPIO16 needs to be tied to RST to wake from deepSleep. Execute restarts from beginning of sketch
+    Serial.println("Test1");
 }
 #endif
 
