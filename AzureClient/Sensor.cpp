@@ -9,29 +9,22 @@ void Sensor::measure()
 
 char *Sensor::toJSON()
 {
-  /*  https://github.com/bblanchon/ArduinoJson/wiki/Memory-model
-    Have allowed for a few extra json fields that actually being used at the moment
-*/
-
   StaticJsonDocument<JSON_OBJECT_SIZE(16)> root;
 
-  root["DeviceId"] = deviceId;
-  //  root["Utc"] = getISODateTime();
-  root["Celsius"] = temperature;
-  root["Humidity"] = humidity;
-  root["hPa"] = pressure;
-  root["Light"] = light;
-  root["Geo"] = geo;
-  root["Schema"] = 1;
+  root["deviceId"] = deviceId;
+  root["timestamp"] = getISODateTime();
+  root["temperatrue"] = temperature;
+  root["humidity"] = humidity;
+  root["pressure"] = pressure;
+  root["light"] = light;
+  root["geo"] = geo;
 
-  //instrumentation
-  //  root["WiFi"] = telemetry->WiFiConnectAttempts;
+  //root["WiFi"] = telemetry->WiFiConnectAttempts;
 #ifdef ARDUINO_ARCH_ESP8266
-  root["Mem"] = ESP.getFreeHeap();
+  //root["Mem"] = ESP.getFreeHeap();
 #endif
 
-  root["Id"] = ++msgId;
-  root["NotSent"] = notSent;
+  root["messageId"] = ++msgId;
 
   serializeJson(root, buffer);
 
@@ -40,6 +33,6 @@ char *Sensor::toJSON()
 
 char *Sensor::getISODateTime()
 {
-  snprintf(isoTime, sizeof(isoTime), "%4d-%02d-%02dT%02d:%02d:%02d", year(), month(), day(), hour(), minute(), second());
+  snprintf(isoTime, sizeof(isoTime), "%4d-%02d-%02dT%02d:%02d:%02dZ", year(), month(), day(), hour(), minute(), second());
   return isoTime;
 }

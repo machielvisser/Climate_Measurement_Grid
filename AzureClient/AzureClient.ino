@@ -29,12 +29,12 @@
   With my limited experience with the Sparkfun ESP8266 Dev board I needed to use the Generic ESP8266 Arduino IDE Board Manager.
   See notes at https://learn.sparkfun.com/tutorials/esp8266-thing-development-board-hookup-guide/setting-up-arduino
   Change to Generic ESP8266 Module, and in the sub menus, make sure the following sub-menu's are also set:
-	- Flash Mode: DIO
-	- Flash Frequency: 80MHz
-	- Upload Using: Serial
-	- CPU Frequency: 80MHz
-	- Flash Size: 512K (no SPIFFS)
-	- Reset Method: nodemcu
+  - Flash Mode: DIO
+  - Flash Frequency: 80MHz
+  - Upload Using: Serial
+  - CPU Frequency: 80MHz
+  - Flash Size: 512K (no SPIFFS)
+  - Reset Method: nodemcu
 
 
   REQUIRED LIBRARIES: Install Arduino Libraries from Sketch -> Include Library -> Manage Libraries
@@ -67,7 +67,7 @@
   5. Open Boards Manager from Tools > Board -> Boards Manager. Search for ESP8266 and install.
   6. Select NodeMUC or WeMos D1 Mini Board: Tools -> Board  -> NodeMCU 1.0 (ESP-12E module) or WeMos D1 Mini
   7. Set Port and Upload Speed: Tools. Note, you may need to try different port speeds to successfully flash the device.
-	 - Faster is better as each time you upload the code to your device you are re-flashing the complete ROM not just your code, but faster can be less reliable.
+   - Faster is better as each time you upload the code to your device you are re-flashing the complete ROM not just your code, but faster can be less reliable.
 
 
   OPTIONAL COMPONENTS:
@@ -92,9 +92,15 @@
 
 #include "Sensor.h"
 #include "DigitalPin.h"
+#include "IotHub.h"
+
+#ifdef FAKESENSOR
+Sensor sensor; // Fake sample environmental data useful for testing///
+#endif
 
 #ifdef SHT30
 #include "Sht30.h"
+Sht30 sensor;
 #endif
 
 #ifdef BMP180
@@ -103,6 +109,7 @@
 
 #ifdef BME280
 #include "Bme280.h"
+Bme280 sensor;
 #endif
 
 #ifdef BMP280
@@ -114,9 +121,10 @@
 #endif
 
 Device device(WIFI_SSID, WIFI_PWD, PUBLISH_RATE_IN_SECONDS, DEEP_SLEEP_IN_SECONDS);
+IotHub hub(IOTHUB_CONNECTION_STRING, IOTHUB_CERTIFICATE_FINGERPRINT);
 
 WiFiUDP ntpUDP;
-NTPClient timeClient(ntpUDP, NTP_SERVER);
+NTPClient timeClient(ntpUDP);
 
 #ifdef ARDUINO_ARCH_ESP8266
 DigitalPin led(LED_BUILTIN, false, true); // initial state is off (false), invert true = high turns led off
@@ -125,20 +133,6 @@ DigitalPin led(LED_BUILTIN, false, true); // initial state is off (false), inver
 #ifdef ARDUINO_ARCH_SAMD
 DigitalPin led(LED_BUILTIN, false, false); // initial state is off (false)
 #endif
-
-// uncomment required sensor
-#ifdef FAKESENSOR
-Sensor sensor; // Fake sample environmental data useful for testing///
-#endif
-
-#ifdef BME280
-Bme280 sensor;
-#endif
-
-#ifdef SHT30
-Sht30 sensor;
-#endif
-
 
 // Structure which will be stored in RTC memory.
 // First field is CRC32, which is calculated based on the
@@ -156,12 +150,14 @@ struct
   int notSent;
 } rtcData;
 
-void setup()
-{
+void setup() {
   Serial.begin(115200);
-
+  Serial.println("Starting");
+  
   sensor.deviceId = hub.getDeviceId();
   sensor.geo = DEVICE_LOCATION;
+  Serial.print("Sensor configuration: ");
+  Serial.printf("Id: %s Location: %s\n", sensor.deviceId, sensor.geo);
 
 #ifdef ARDUINO_ARCH_ESP8266
   if (device.deepSleepSeconds > 0)
@@ -181,28 +177,22 @@ void setup()
 
   setSyncProvider(getCurrentTime); // This initiates an immediate call to getCurrentTime
   setSyncInterval(60 * 60 * 12);   // update time every twelve hours
-
+  
   delay(100);
-  Serial.println("");
+  Serial.println("Setup done");
 }
 
-void loop()
-{
-  sensor.measure();
-
-  //  sensor.light = ldr.measure();
-  //  display.updateDisplay();
-
-  device.connectWifi();
-
+void loop() {
+  
   led.on();
-  int resultCode = hub.publish(sensor.toJSON()); // resultCode 204 IoTHub Success, 201 EventHub Success
+  
+  sensor.measure();
+  
+  Serial.println(sensor.toJSON());
+  
   led.off();
 
-  Serial.print(sensor.deviceId);
-  Serial.println(": " + String(resultCode));
-
-  delay(device.publishRateInSeconds * 1000); // limit publishing rate
+  delay(device.publishRateInSeconds * 1000);
 }
 
 #ifdef ARDUINO_ARCH_ESP8266
@@ -259,8 +249,8 @@ void lowPowerPublishESP8266()
     rtcData.msgId = sensor.msgId;
     rtcData.lastSentEpoch = now();
 
-    int resultCode = hub.publish(sensor.toJSON()); // resultCode 204 IoTHub Success, 201 EventHub Success
-
+    //int resultCode = hub.publish(sensor.toJSON()); // resultCode 204 IoTHub Success, 201 EventHub Success
+    int resultCode = 0;
     // only update rtc data if successfully published data
     if (resultCode == 201 || resultCode == 204)
     {
