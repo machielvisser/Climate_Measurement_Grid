@@ -13,7 +13,7 @@ char *Sensor::toJSON()
 
   root["deviceId"] = deviceId;
   root["timestamp"] = getISODateTime();
-  root["temperatrue"] = temperature;
+  root["temperature"] = temperature;
   root["humidity"] = humidity;
   root["pressure"] = pressure;
   root["light"] = light;

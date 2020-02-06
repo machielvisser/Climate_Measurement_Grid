@@ -156,6 +156,7 @@ void setup() {
   
   sensor.deviceId = hub.getDeviceId();
   sensor.geo = DEVICE_LOCATION;
+  
   Serial.printf("Sensor configuration: (Id: %s Location: %s)\n", sensor.deviceId, sensor.geo);
 
 #ifdef ARDUINO_ARCH_ESP8266
@@ -188,6 +189,7 @@ void loop() {
   sensor.measure();
   
   Serial.println(sensor.toJSON());
+  int resultCode = hub.publish(sensor.toJSON()); // resultCode 204 IoTHub Success, 201 EventHub Success
   
   led.off();
 
@@ -274,7 +276,6 @@ void lowPowerPublishESP8266()
 
   WiFi.mode(WIFI_OFF);
   ESP.deepSleep(1000000 * device.deepSleepSeconds, WAKE_RF_DEFAULT); // GPIO16 needs to be tied to RST to wake from deepSleep. Execute restarts from beginning of sketch
-    Serial.println("Test1");
 }
 #endif
 

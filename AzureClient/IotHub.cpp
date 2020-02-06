@@ -51,9 +51,10 @@ bool IotHub::connect()
 
   if (!client->connected())
   {
+    client->setInsecure();
     if (!client->connect(device.host, 443))
     {
-      Serial.printf("Host connection failed (%s).  WiFi IP Address: \n", device.host);
+      Serial.printf("Host connection failed (%s).  WiFi IP Address: ", device.host);
       Serial.println(WiFi.localIP());
       return false; //"Not Connected";
     }

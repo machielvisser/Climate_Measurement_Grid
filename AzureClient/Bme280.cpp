@@ -7,7 +7,11 @@ void Bme280::initialise()
     return;
   }
 
-  bme280.begin(BME280_ADDRESS_ALTERNATE);
+  int result = bme280.begin(BME280_ADDRESS_ALTERNATE);
+  if (!result) {
+    Serial.println("Check wiring" );
+  }
+  delay(100);
   bme280.setSampling(
         Adafruit_BME280::MODE_FORCED,
         Adafruit_BME280::SAMPLING_X1,
@@ -25,7 +29,7 @@ void Bme280::measure()
 
   bme280.takeForcedMeasurement();
   
-  temperature = bme280.readTemperature();
+  temperature = bme280.readTemperature();  
   pressure = bme280.readPressure() / 100.0;
   humidity = bme280.readHumidity();
 }
