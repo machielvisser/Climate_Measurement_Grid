@@ -170,9 +170,10 @@ There are a number of ESP8266 based development boards available so be sure to c
 
 1. [WeMos D1 Mini](http://www.wemos.cc/)
 2. [BME280 Barometric Pressure Sensor](https://www.hackerstore.nl/Afbeeldingen/1385groot.jpg)
-3. 1 x Proto board
+3. 1 x Breadboard,  Protoboard or PCB
 
 ![WeMos D1 Mini BME280](https://github.com/machielvisser/ESP8266-Climate-Measure-Station/blob/master/AzureClient/Fritzing/D1Mini_BME280.jpg)
+![Custom PCB](https://github.com/machielvisser/ESP8266-Climate-Measure-Station/blob/master/AzureClient/Fritzing/05_fritzing_pcb_WMi5x8SVzV.jpg)
 
 ### WeMos D1 Mini with DHT Shield Sensor
 
