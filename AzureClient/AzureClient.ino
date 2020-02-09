@@ -121,7 +121,7 @@ Bme280 sensor;
 #endif
 
 Device device(WIFI_SSID, WIFI_PWD, PUBLISH_RATE_IN_SECONDS, DEEP_SLEEP_IN_SECONDS);
-IotHub hub(IOTHUB_CONNECTION_STRING, IOTHUB_CERTIFICATE_FINGERPRINT);
+IotHub hub(IOTHUB_CONNECTION_STRING, (char*)IOTHUB_CERTIFICATE_FINGERPRINT);
 
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP);
@@ -166,11 +166,6 @@ void setup() {
   }
 #endif
 
-#ifdef ARDUINO_SAMD_FEATHER_M0
-  //  Required for feather m0 wifi
-  WiFi.setPins(8, 7, 4, 2);
-#endif
-
   device.connectWifi();
 
   timeClient.begin(); // must be called before setSyncProvider
@@ -186,14 +181,20 @@ void loop() {
   
   led.on();
   
-  sensor.measure();
-  
-  Serial.println(sensor.toJSON());
-  int resultCode = hub.publish(sensor.toJSON()); // resultCode 204 IoTHub Success, 201 EventHub Success
-  
-  led.off();
+  int result = sensor.measure();
 
-  delay(device.publishRateInSeconds * 1000);
+  if (result) {    
+    char *message = sensor.toJSON();
+    Serial.println(message);
+    hub.publish(message); // resultCode 204 IoTHub Success, 201 EventHub Success
+    led.off();
+    delay(device.publishRateInSeconds * 1000);        
+  } 
+  else {    
+    Serial.println("Failed to take measurement"); 
+    led.off();  
+    delay(1000);     
+  }
 }
 
 #ifdef ARDUINO_ARCH_ESP8266
@@ -250,8 +251,9 @@ void lowPowerPublishESP8266()
     rtcData.msgId = sensor.msgId;
     rtcData.lastSentEpoch = now();
 
-    Serial.println(sensor.toJSON());
-    int resultCode = hub.publish(sensor.toJSON()); // resultCode 204 IoTHub Success, 201 EventHub Success
+    char *message = sensor.toJSON();
+    Serial.println(message);
+    int resultCode = hub.publish(message); // resultCode 204 IoTHub Success, 201 EventHub Success
     
     // only update rtc data if successfully published data
     if (resultCode == 201 || resultCode == 204)

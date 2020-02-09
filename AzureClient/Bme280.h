@@ -9,8 +9,8 @@ class Bme280 : public Sensor
 {
 public:
   Bme280() {};
-  void measure();
-  void initialise();
+  bool measure();
+  bool initialise();
 
 protected:
   Adafruit_BME280 bme280; // I2C

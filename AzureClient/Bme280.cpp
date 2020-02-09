@@ -1,15 +1,15 @@
 #include "Bme280.h"
 
-void Bme280::initialise()
+bool Bme280::initialise()
 {
   if (initialised)
   {
-    return;
+    return true;
   }
 
   int result = bme280.begin(BME280_ADDRESS_ALTERNATE);
   if (!result) {
-    Serial.println("Check wiring" );
+    Serial.println("Check wiring");
   }
   delay(100);
   bme280.setSampling(
@@ -20,16 +20,22 @@ void Bme280::initialise()
         Adafruit_BME280::FILTER_OFF);
         
   delay(100);
-  initialised = true;
+  initialised = result;
+
+  return initialised;
 }
 
-void Bme280::measure()
+bool Bme280::measure()
 {
-  initialise();
+  int result = initialise();
+  if (!result)
+    return false;
 
   bme280.takeForcedMeasurement();
   
   temperature = bme280.readTemperature();  
   pressure = bme280.readPressure() / 100.0;
   humidity = bme280.readHumidity();
+
+  return true;
 }

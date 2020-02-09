@@ -1,10 +1,12 @@
 #include "Sensor.h"
 
-void Sensor::measure()
+bool Sensor::measure()
 {
   temperature = 20 + random(-1, 1);
   humidity = 50 + random(-20, 40);
   pressure = 1000 + random(-100, 100);
+
+  return true;
 }
 
 char *Sensor::toJSON()

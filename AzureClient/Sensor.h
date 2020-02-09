@@ -11,7 +11,7 @@ class Sensor
 public:
   Sensor() {};
 
-  void measure();
+  bool measure();
   char *toJSON();
   void setMsgId(unsigned int msgId)
   {

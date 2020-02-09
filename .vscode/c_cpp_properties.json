@@ -21,6 +21,8 @@
         {
             "name": "Win32",
             "includePath": [
+                "C:\\Users\\machi\\AppData\\Local\\Arduino15\\packages\\esp8266\\tools\\**",
+                "C:\\Users\\machi\\AppData\\Local\\Arduino15\\packages\\esp8266\\hardware\\esp8266\\2.6.3\\**",
                 "~\\Documents\\Arduino\\libraries\\**",
                 "${workspaceFolder}/**",
                 "~\\AppData\\Local\\Arduino15\\packages\\esp8266\\hardware\\esp8266\\**",

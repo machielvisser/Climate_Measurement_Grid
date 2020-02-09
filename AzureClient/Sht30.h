@@ -8,10 +8,10 @@ class Sht30 : public Sensor
 {
 public:
   Sht30(){};
-  void measure();
+  bool measure();
 
 protected:
-  void initialise();
+  bool initialise();
   Adafruit_SHT31 sht31 = Adafruit_SHT31();
 };
 
