@@ -1,4 +1,4 @@
-# Securely stream data from ESP8266 MCUs to Azure IoT Hub
+# Home climate analytics using multiple WeMos and Azure Notebooks
 
 This solution is based on the solution of [Dave Glover](https://developer.microsoft.com/en-us/advocates/dave-glover?WT.mc_id=article-github-dglover)
 
